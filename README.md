@@ -7,7 +7,7 @@ Sample Credentials :
 - Email : test@testuser.com (User)
 - Passw : 123456789  
 - Email : test@employer.com (Employer)
-- Passw : 123456789 <br />
+- Passw : 123456789 <br /><br />
 **Live Preview** : https://indeed-clone-tr.herokuapp.com/ <br />
 ![Live Preview](https://i.imgur.com/1ZAKGQI.png)
 ### Technologies used
