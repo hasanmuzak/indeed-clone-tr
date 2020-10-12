@@ -3,6 +3,13 @@ Indeed Clone Project
 ---
 It is a simple Indeed Clone project. A lot of properties of "Indeed.com" are not configured in this project.
 
+Sample Credentials :
+- Email : test@testuser.com (User)
+- Passw : 123456789  
+- Email : test@employer.com (Employer)
+- Passw : 123456789
+
+
 ### Technologies used
 
 **Backend :** Node.js  
