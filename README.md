@@ -18,7 +18,7 @@ Sample Credentials :
 **Installation**
 - Fill up ".envexample" file according to your credentials and then change its extension as .env
 - To install modules, type : ```npm install ```
-- To run, type : ```npm run dev``` (It activates nodemon)
+- To run, type : ```npm run dev``` (It activates nodemon) or ```node server.js```
 
 ---
 **Kurulum**
