@@ -1,0 +1,45 @@
+{% extends './list_post.njk' %}
+
+{% block head %}
+<title>Indeed Clone || Detail</title>
+{% endblock head %}
+
+{% block content %}
+<div class="bg-white w-full pt-6 pb-4 border-t-2">
+    <div class="container mx-auto">
+        <div class="p-4 border rounded">
+            <div class="mb-6">
+                <h3 class="text-black post-list-detail-title">{{result[0].post.title}}</h3>
+                <h3 class="text-gray-800 company-location-detail">{{result[0].post.company}} - {{result[0].post.location}}</h3>
+            </div>
+            <div class="hidden" id="fake_employer_post_detail">
+                {{result[0].post.job_description}}
+            </div>
+            <div id="real_employer_post_detail">
+            </div>
+        </div>
+        <h3 class="block py-4 border-b-2 border-gray-400 font-semibold text-gray-700">Başvuranlar</h3>
+        <div class="mt-4 grid grid-cols-6">
+            {% for item in result %}
+                <div class="border p-2 hover:shadow transition duration-300 rounded mr-3">
+                    <div class="flex justify-between">
+                        <h3 class="font-semibold text-gray-600">{{item.user.first_name}} {{item.user.last_name}}</h3>
+                        <a target="_blank" class="text-blue-600 text-xs font-semibold" href="/job/applier/cv/{{item.user.id}}">CV</a>
+                    </div>
+                    <h3 class="text-xs mt-2">{{item.user.school}}</h3>
+                    <h3 class="text-xs mt-1">{{item.user.department}}</h3>
+                    {% if item.user.is_student == true %}
+                        <h3 class="text-xs mt-1">Öğrenci</h3>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+    var hiddenDiv = document.getElementById('fake_employer_post_detail');
+    var realDiv = document.getElementById('real_employer_post_detail');
+    var postAsText = hiddenDiv.innerText;
+    realDiv.innerHTML = postAsText;
+</script>
+{% endblock content %}

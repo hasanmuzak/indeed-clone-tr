@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://unpkg.com/view-design/dist/styles/iview.css">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/users.css">
+    <link rel="stylesheet" href="/styles/resume.css">
+</head>
+
+<body>
+    <div id="app" class="bg-white w-full pt-6 pb-4 ">
+        <div class="w-full flex">
+            <div class="">
+                <div class="border-b-2 py-4 mb-4 bg-white" style="position: sticky; top: 0;">
+                   <div class="px-6">
+                        <h3 class="text-black post-list-detail-title">{{post.title}}</h3>
+                        <h3 class="text-gray-800 company-location-detail">{{post.company}} - {{post.location}}</h3>
+                   </div>
+                   <div class="px-6">
+                    {% if is_applied == true %}
+                    <i-button :disabled=true class="mt-2" type="primary">Başvuru Yapılmış</i-button>
+                    {% else %}
+                    <i-button @click="modal1 = true" :disabled={{ (isAuthenticated == false) or (user.is_employer == true) or (user.first_name.length === 0) or (user.last_name.length === 0) or (user.school.length === 0) or (user.department.length === 0) or (user.skillList == null) or (user.first_name.length === 0) or (experienceData.length === 0) }} class="mt-2" type="primary">Başvur</i-button>
+                    {% endif %}
+                    {% if (user.first_name.length === 0) or (user.last_name.length === 0) or (user.school.length === 0) or (user.department.length === 0) or (user.skillList == null) or (user.first_name.length === 0) or (experienceData.length === 0) %}
+                    <span class="text-xs font-semibold text-red-600 mt-4 block">Eksiksiz bir CV'ye sahip değilsiniz.</span>
+                    {% endif %}
+                    {% if (user.is_employer == true) or (isAuthenticated == false) %}
+                    <span class="text-xs font-semibold text-blue-600 mt-4 block">İşveren iseniz ya da giriş yapmamışsanız başvuramazsınız.</span>
+                    {% endif %}
+                   </div>
+                </div>
+                <div class="hidden" id="fake_employer_post_detail">
+                    {{post.job_description}}
+                </div>
+                <div id="real_employer_post_detail" class="p-6">
+                </div>
+                <Modal
+                    v-model="modal1"
+                    footer-hide
+                    :closable=false>
+                    <div>
+                        <h3 class="text-gray-700 review-title font-semibold">{{post.title}}</h3>
+                        <h3 class="font-semibold text-gray-600">{{post.company}} - {{post.location}}, TR</h3>
+                    </div>
+                    <h3 class="font-semibold text-gray-600 mt-4 mb-2">CV</h3>
+                    <div class="border-2 border-gray-400 rounded">
+                        <div class="border-b-2 border-gray-400">
+                            <h3 class="p-4 text-gray-700 review-title font-semibold">Çevrimiçi CV</h3>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-gray-700 review-title font-semibold">{{user.first_name}}</h3>
+                            <p class="mt-1">{{user.email}}</p>
+                            <p class="mt-1">+90{{user.phoneNumber}}</p>
+                            <p class="mt-1">{{user.location}}</p>
+                            {% for experience in experiences %}
+                            <div class="detail_experience">
+                                <p class="mt-4">{{experience.position}}, {{experience.companyName}}</p>
+                            </div>
+                            <p class="mt-1">{{user.school}}, {{user.educational_level}} - {{user.department}}</p>
+                            {% endfor %}
+                        </div>
+                        <a class="block p-2 bg-gray-400 text-gray-700 text-center transition duration-300 hover:text-blue-600" href="/resume/wizard/review" target="_blank"><Icon type="md-create" class="mr-2" size="16"></Icon>Düzenle</a>
+                        
+                    </div>
+                    <div class="flex  mt-5 items-center">
+                        <form action="/job/apply" method="post">
+                            <input type="hidden" name="postid" value="{{post.id}}">
+                            <input type="hidden" name="userid" value="{{post.id}}">
+                            <i-button
+                             html-type="submit" style="border-radius: 33px;" class=" font-semibold p-5 flex items-center justify-center" type="primary">
+                                Başvur
+                            </i-button>
+                        </form>
+                        <span @click="modal1 = false" class="text-blue-600 cursor-pointer review-title ml-4 transition duration-300 hover:text-blue-400">İptal Et</span>
+                    </div>
+                </Modal>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://vuejs.org/js/vue.js"></script>
+    <script src="https://unpkg.com/view-design/dist/iview.min.js"></script>
+
+    <script>
+        var hiddenDiv = document.getElementById('fake_employer_post_detail');
+        var realDiv = document.getElementById('real_employer_post_detail');
+        var postAsText = hiddenDiv.innerText;
+        realDiv.innerHTML = postAsText;
+
+        new Vue({
+            el:'#app',
+            delimiters: ['<%', '%>'],
+            data() {
+                return {
+                    modal1 : false
+                }
+            },
+        })
+    </script>
+</body>
+</html>

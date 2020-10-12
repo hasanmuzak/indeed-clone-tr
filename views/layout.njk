@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://unpkg.com/view-design/dist/styles/iview.css">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/users.css">
+    <link rel="stylesheet" href="/styles/resume.css">
+    <link rel="icon"
+        href="https://spirerecoverysolutions.com/wp-content/uploads/2020/04/Home-Icon-indeed-v2-300x300-1.png">
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    {%block head%}
+    {%endblock head%}
+    
+</head>
+
+<body>
+    <div id="app">
+        <Modal
+            v-model="registerEmployer"
+            title="İşveren Olarak Üye Ol"
+            footer-hide>
+            <form action="/employer/register" method="POST">
+                <div class="flex flex-col mt-5">
+                    <span class="text-gray-700 font-semibold">E-mail Adresi</span>
+                    <i-input name="email" :class="$v.email.$error ? 'error' : ''" @input="$v.email.$touch()" v-model="email" class="mt-2 login-register-input" size="large"></i-input>
+                    <span v-if="$v.email.$error" class="text-red-600 font-semibold error-span">Lütfen geçerli bir email adresi gir</span>
+                    <span class="text-red-600 font-semibold error-span">{{errors}}</span>
+                </div>
+        
+                <div class="flex flex-col mt-5">
+                    <span class="text-gray-700 font-semibold">Şifre</span>
+                    <i-input name="password" :class="$v.password.$error ? 'error' : ''" @input="$v.password.$touch()" type="password"  v-model="password" class="mt-2 login-register-input" size="large"></i-input>
+                    <span v-if="$v.password.$error" class="text-red-600 font-semibold error-span">Lütfen en az 8 karakter uzunluğunda bir şifre gir</span>
+                </div>
+                <div class="mt-3">
+                    <Checkbox>Bu cihazda beni hatırla</Checkbox>
+                </div>
+                <i-button :disabled="$v.$invalid" html-type="submit" style="border-radius: 33px;" class=" font-semibold w-full mt-5 mb-1 p-5 flex items-center justify-center"
+                    type="primary">Hesap Oluştur
+                </i-button>            
+            </form>
+        </Modal>
+        <div class="flex items-center mx-auto px-3 py-2 justify-between bg-white">
+            <div>
+                <a href="/">
+                    <div class="logo"></div>
+                </a>
+            </div>
+            <div class="hamburger" @click="toggleClassFunc">
+                <div class="line top bg-black"></div>
+                <div class="line mid bg-black"></div>
+                <div class="line bot bg-black"></div>
+            </div>
+            <div class="links-container flex justify-between  w-full mt-2">
+                <div class="md:ml-4 flex-col md:flex-row flex">
+                    <a class="rounded" >
+                        <span @click="error(false)">Ara</span>
+                    </a>
+                    <a class="rounded" >
+                        <span @click="error(false)">Şirket Yorumları</span>
+                    </a>
+                    <a class="rounded" >
+                        <span @click="error(false)">Maaş Bul</span>
+                    </a>
+
+                </div>
+                <div class=" flex-col md:items-center md:flex-row flex">
+                    {% if isAuthenticated %}
+                    <Dropdown class="hidden md:block" trigger="click">
+                        <a href="javascript:void(0)">
+                            <Icon size="22" class="md:mr-2 md:ml-0 text-left ml-2 mr-0" type="md-person"></Icon>
+                            <Icon type="ios-arrow-down"></Icon>
+                        </a>
+                        <DropdownMenu class="flex flex-col px-6 py-2" slot="list">
+                            {% if user.is_employer %}
+                            <DropdownItem><a class="flex w-full justify-between" href="/employer/create/post">İş İlanı Oluştur<Icon type="md-add" /></a></DropdownItem>
+                            <DropdownItem><a class=" mt-4 flex w-full justify-between" href="/employer/list/posts">İlanlarım <Icon type="md-paper" /></a></DropdownItem>
+                            {% else %}
+                            <DropdownItem><a class="flex w-full justify-between" href="/resume/wizard/review">CV'im <Icon type="md-paper" /></a></DropdownItem>
+                            <DropdownItem class="mt-4"><a class="flex w-full justify-between" href="/resume/wizard/profile">Cv Oluştur <Icon type="md-add" /></a>
+                            {% endif %}
+                            
+                        </DropdownMenu>
+                    </Dropdown>
+                    {% else %}
+                    <a class="rounded" href="/user/register">
+                        <span>CV'nizi Yükleyin</span>
+                    </a>
+                    <a class="rounded text-blue-600 font-semibold" href="/user/login">
+                        <span>Giriş</span>
+                    </a>
+                    {% endif %}
+                   {% if isAuthenticated %}
+                        {% if user.is_employer %}
+                            <a class="flex w-full justify-between md:hidden" href="/employer/create/post">İş İlanı Oluştur<Icon type="md-add" /></a>
+                            <a class="flex w-full justify-between md:hidden" href="/employer/list/posts">İlanlarım <Icon type="md-paper" /></a>
+                        {% else %}
+                            <a class="flex w-full justify-between md:hidden" href="/resume/wizard/review">CV'im <Icon type="md-paper" /></a>
+                            <a class="flex w-full justify-between md:hidden" href="/resume/wizard/profile">Cv Oluştur <Icon type="md-add" /></a>
+                        {% endif %}
+                   <a class="rounded md:ml-6" href="/logout">
+                        <span>Çıkış Yap</span>
+                    </a>
+                   {% else %}
+                    <a class="rounded md:ml-6" @click="registerEmployer=true">
+                        <span>İşverenler / İş İlanı Ver</span>
+                    </a>
+                   {% endif %}
+                </div>
+            </div>
+        </div>
+        {% block content %}
+        {% endblock content %}
+
+    </div>
+    
+    </div>
+
+    <script src="https://vuejs.org/js/vue.js"></script>
+    <script src="https://unpkg.com/vuelidate/dist/vuelidate.min.js"></script>
+    <script src="https://unpkg.com/vuelidate/dist/validators.min.js"></script>
+    <script src="https://unpkg.com/view-design/dist/iview.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        CKEDITOR.replace( 'job_detail' );
+    </script>
+</body>
+
+</html>

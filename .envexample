@@ -1,0 +1,5 @@
+PORT=<Your Port>
+secret=<Session Secret>
+MongoURL=<MongoDB URL>
+gmailUser=<Gmail for Transporter>
+appPassword=<Gmail App Password>

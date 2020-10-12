@@ -1,0 +1,92 @@
+{% extends 'layout.njk' %}
+{% block head %}
+<title>Indeed Clone || Homepage</title>
+{% endblock head %}
+{% block content %}
+
+<div id="home" style="background-color:white !important;">
+    <div class="home-section-first w-full">
+        <div class="container mx-auto home-section-sub-container">
+            <div class="">
+                <form action="/job/search" method="get" class="search-section justify-between flex flex-col lg:flex-row lg:w-3/4 p-4 lg:p-0 mx-auto">
+                    <div class="w-full lg:mr-1">
+                        <h1 class="font-semibold search-title">Ne</h1>
+                        <p class="search-little-info">pozisyon adı, anahtar kelimeler veya şirket adı giriniz</p>
+                        <auto-complete class="mt-2" name="title" size="large" suffix="md-search" placeholder="pozisyon adı, anahtar kelimeler veya şirket adı giriniz" :filter-method="filterMethod"  clearable :data="findJob.filterDataArray" v-model="findJob.filterData" style="width: 100%;" />
+                    </div>
+                    <div class="w-full mt-4 lg:mt-0 lg:ml-1">
+                        <h1 class="font-semibold search-title">Nerede</h1>
+                        <p class="search-little-info">iş aramak istediğiniz il veya ilçe adını giriniz</p>
+                        <auto-complete name="location" class="mt-2" size="large" suffix="md-pin" placeholder="iş aramak istediğiniz il veya ilçe adını giriniz" :filter-method="filterMethod"  clearable :data="findJob.cityDataArray" style="width: 100%;" value=""></auto-complete>
+                    </div>
+                    <i-button :disabled="findJob.filterData.length <= 3" html-type="submit" size="large" class="mt-4 lg:mt-0 lg:self-end lg:mx-2 px-6" type="primary">Ara</i-button>
+                </form>
+            </div>
+            <div class="search-section mt-8 justify-between flex lg:w-3/4 p-4 lg:p-0 mx-auto">
+                <div class="w-full flex-col flex items-center justify-between text-lg">
+                    {% if isAuthenticated %}
+                    {% else %}
+                    <div>
+                        <a class="font-semibold text-blue-700 search-section-link" href="/user/register">CV'nizi hazırlayın</a><span> - Binlerce işe her yerden kolaylıkla başvurun</span>
+                    </div>
+                    <div class="mt-4">
+                        <a @click="registerEmployer=true" class="font-semibold text-blue-700 search-section-link">İşverenler: Bir iş ilanı verin</a><span> - Bir sonraki çalışanınız burada</span>
+                    </div>
+                    {% endif %}  
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="home-section-second w-full">
+        <div class="container mx-auto home-section-sub-container pb-16">
+            <div class="search-section lg:w-3/4 md:px-4 lg:p-0 mx-auto text-center">
+                <h1 class="font-semibold search-title">Popüler Aramalar</h1>
+            </div>
+            <div class="search-section mt-0 md:mt-1 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 lg:w-3/4 p-4 lg:p-0 mx-auto">
+                <div class="mr-3 mt-4">
+                    <a href="#" class="search-city-link bg-gray-300 rounded text-center p-2 w-full h-full block"><i class="ivu-icon ivu-icon-md-search mr-2"></i>Ankara</a>
+                </div>
+                <div class="mr-3 mt-4">
+                    <a href="#" class="search-city-link bg-gray-300 rounded text-center p-2 w-full h-full block"><i class="ivu-icon ivu-icon-md-search mr-2"></i>İstanbul</a>
+                </div>
+                <div class="mr-3 mt-4">
+                    <a href="#" class="search-city-link bg-gray-300 rounded text-center p-2 w-full h-full block"><i class="ivu-icon ivu-icon-md-search mr-2"></i>İzmir</a>
+                </div>
+                <div class="mr-3 mt-4">
+                    <a href="#" class="search-city-link bg-gray-300 rounded text-center p-2 w-full h-full block"><i class="ivu-icon ivu-icon-md-search mr-2"></i>Bursa</a>
+                </div>
+                <div class="mr-3 mt-4">
+                    <a href="#" class="search-city-link bg-gray-300 rounded text-center p-2 w-full h-full block"><i class="ivu-icon ivu-icon-md-search mr-2"></i>Adana</a>
+                </div>
+                <div class="mr-3 mt-4">
+                    <a href="#" class="search-city-link bg-gray-300 rounded text-center p-2 w-full h-full block"><i class="ivu-icon ivu-icon-md-search mr-2"></i>Eskişehir</a>
+                </div>
+                <div class="mr-3 mt-4">
+                    <a href="#" class="search-city-link bg-gray-300 rounded text-center p-2 w-full h-full block"><i class="ivu-icon ivu-icon-md-search mr-2"></i>Konya</a>
+                </div>
+                <div class="mr-3 mt-4">
+                    <a href="#" class="search-city-link bg-gray-300 rounded text-center p-2 w-full h-full block"><i class="ivu-icon ivu-icon-md-search mr-2"></i>Denizli</a>
+                </div>
+                <div class="mr-3 mt-4">
+                    <a href="#" class="search-city-link bg-gray-300 rounded text-center p-2 w-full h-full block"><i class="ivu-icon ivu-icon-md-search mr-2"></i>Mersin</a>
+                </div>
+                <div class="mr-3 mt-4">
+                    <a href="#" class="search-city-link bg-gray-300 rounded text-center p-2 w-full h-full block"><i class="ivu-icon ivu-icon-md-search mr-2"></i>Samsun</a>
+                </div>
+            </div>
+            <div class="search-section lg:w-3/4 p-4 lg:p-0 mx-auto flex items-center justify-center mt-6">
+                <div class="flex justify-center md:w-1/3 items-center bg-blue-200 rounded p-3 text-gray-800">
+                    <i class="ivu-icon ivu-icon-md-information-circle mr-2 text-lg"></i><p>Çerezler verdiğimiz hizmetlere yardımcı oluyor. Hizmetlerimizi kullanarak çerez politikamızı kabul etmiş olursunuz.</p>
+                </div>
+            </div>
+            <div class="search-section lg:w-3/4 p-4 lg:p-0 lg:pb-10 mx-auto text-center mt-4 md:mt-12">
+                <div>
+                    <span>Amerika Birleşik Devletleri'ndeki işler için, burayı ziyaret edin:</span>
+                    <a class="text-blue-700" href="https://www.indeed.com/stc">www.indeed.com</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

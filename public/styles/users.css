@@ -1,0 +1,109 @@
+.list-posts-employer{
+    height: calc(100vh - 48.75px);
+}
+.list-post-container:hover, .list-post-container:hover a{
+    color: inherit;
+}
+.list-post-container:hover .post_title{
+    text-decoration: underline;
+}
+.post_company{
+    font-size: 16px;
+}
+.post_title{
+    font-size: 17px;
+}
+.trash-icn{
+    cursor: pointer;
+    transition: .2s;
+}
+.trash-icn:hover{
+    color: rgb(59, 147, 230);
+}
+.ivu-select-dropdown-list{
+    overflow-y: unset !important;
+}
+.resume-sub-title{
+    font-size: 18px;
+}
+.resume-create-title{
+    font-size: 23px;
+    font-weight: 600;
+}
+.error-span{
+    font-size: 12px;
+    margin-top: 6px;
+}
+.social-login{
+    border-radius: 33px;
+    transition: .2s;
+}
+.social-login:hover{
+    background-color: #f2f2f2;
+    color: inherit;
+}
+.or{
+    position: relative;
+}
+.or::before{
+    position: absolute;
+    left: 0;
+    width: 40%;
+    content: '';
+    background-color: rgba(0, 0, 0, 0.089);
+    height: 2px;
+    top: 50%;
+    transform: translate(0,-50%);
+}
+.or::after{
+    position: absolute;
+    right: 0;
+    width: 40%;
+    content: '';
+    background-color: rgba(0, 0, 0, 0.089);
+    height: 2px;
+    top: 50%;
+    transform: translate(0,-50%);
+}
+
+.login-register-input input {
+    border: 2px solid rgba(0, 0, 0, 0.25);
+}
+
+.login-register-input input:hover {
+    border-color: rgba(0, 0, 0, 0.25);
+}
+
+.login-register-input input:focus {
+    border-color: #4299e1;
+    box-shadow: none;
+}
+.login-register-input.error input{
+    border-color: #e53e3eb6;
+}
+.ivu-select-dropdown-list {
+    max-height: 288px;
+    overflow-y: auto;
+}
+
+.search-city-link {
+    transition: .25s;
+}
+
+.search-city-link:hover {
+    background-color: #CBD5E0;
+    color: inherit !important;
+}
+
+.search-section-link:hover {
+    text-decoration: underline;
+}
+.login-main{
+    width: 480px;
+}
+
+@media screen and (max-width: 768px){
+    .login-main{
+        width: 100%;
+    }
+}

@@ -1,0 +1,57 @@
+{% extends '../layout.njk' %}
+
+{% block head %}
+<title>Indeed Clone || Create Post</title>
+{% endblock head %}
+
+{% block content %}
+{% if user.is_verified == false %}
+<div oncontextmenu="return false" class="modal-box flex items-center justify-center select-none">
+    <div class="w-1/3 bg-green-300 p-8 rounded text-center">
+        <h3 class="text-black font-semibold text-lg">
+            Eylem gerekiyor: E-mail adresinizi doğrulayın
+        </h3>
+        <p class="mt-6 text-gray-800">
+            CV'nin işverenlere harika göründüğünden emin ol. CV'ni hemen görüntülemek ve güncellemek için e-posta adresini onayla. Hesabını onaylamak için <span class="font-semibold">{{user.email}}</span> adresine gönderdiğimiz onay bağlantısına tıkla.
+        </p>
+    </div>
+</div>
+{% endif %}
+
+<div class="bg-white w-full h-full pt-6 pb-4 border-t-2">
+    <div class="container mx-auto p-6 border rounded">
+        <h3 class="block text-center font-semibold text-xl text-black">İlan Oluştur</h3>
+        <form method="post">
+            <div class="flex flex-col mt-4">
+                <span class="text-gray-700 font-semibold">Başlık</span>
+                <i-input name="post_title" class="mt-2 login-register-input" size="large"></i-input>
+            </div>
+    
+            <div class="flex flex-col mt-4">
+                <span class="text-gray-700 font-semibold">Firma Adı</span>
+                <i-input name="post_company" class="mt-2 login-register-input" size="large"></i-input>
+            </div>
+    
+            <div class="flex flex-col mt-4">
+                <span class="text-gray-600 font-semibold mb-2">İlan Tanımı :</span>
+                <Alert closable show-icon class="my-2">En az 2-3 cümle ile ilanınızı özetleyin.</Alert>
+                <i-input name="post_description" class="my-2" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Kısa özet..."></i-input>
+            </div>
+            
+            <div class="flex flex-col mt-4">
+                <span class="text-gray-600 font-semibold">Konum</span>
+                <Alert closable show-icon class="my-2">Konum girmek zorunludur!</Alert>
+                <auto-complete name="post_location" class="mt-2" size="large" prefix="md-pin" :filter-method="filterMethod" clearable :data="findJob.cityDataArray" style="width: 100%;" />
+            </div>
+            <div class="flex flex-col mt-4 border-b-2 pb-2">
+                <span class="text-gray-600 font-semibold">Açıklama</span>
+                <Alert closable show-icon class="my-2">İlanınızı iyi bir şekilde açıklayın...</Alert>
+                <textarea name="job_detail"></textarea>
+            </div>
+            <div class="flex">
+                <i-button html-type="submit" class="mt-4 ml-auto" type="primary">Kaydet</i-button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,117 @@
+{% extends '../layout.njk' %}
+
+{% block head %}
+<title>Indeed Clone || Review CV</title>
+{% endblock head %}
+
+{% block content %}
+{% if user.is_verified == false %}
+<div oncontextmenu="return false" class="modal-box flex items-center justify-center select-none">
+    <div class="w-1/3 bg-green-300 p-8 rounded text-center">
+        <h3 class="text-black font-semibold text-lg">
+            Eylem gerekiyor: E-mail adresinizi doğrulayın
+        </h3>
+        <p class="mt-6 text-gray-800">
+            CV'nin işverenlere harika göründüğünden emin ol. CV'ni hemen görüntülemek ve güncellemek için e-posta
+            adresini onayla. Hesabını onaylamak için <span class="font-semibold">{{user.email}}</span> adresine
+            gönderdiğimiz onay bağlantısına tıkla.
+        </p>
+    </div>
+</div>
+{% endif %}
+<div class="w-full bg-white border-t-2 border-b p-6">
+    <div class="container mx-auto">
+        <div class="lg:w-2/3 p-3">
+           <div class="border-2 py-4 px-12 rounded transition duration-300 hover:shadow-lg">
+                <h3 class="review-main-title text-black font-semibold">{{user.first_name}} {{user.last_name}}</h3>
+                <div class="mt-2">
+                    <Icon size="16" class="text-gray-500" type="md-pin"></Icon>
+                    <span class="text-black">{{user.location}}</span>
+                </div>
+           </div>
+        </div>
+    </div>
+</div>
+<div class="review-container container mx-auto flex lg:flex-row flex-col mb-6">
+    
+    <div class="w-full lg:w-2/3 p-3">
+        {% if (user.first_name.length === 0) or (user.last_name.length === 0) or (user.school.length === 0) or (user.department.length === 0) or (user.skillList == null) or (user.first_name.length === 0) or (experienceData.length === 0)  %}
+        <div class="w-full p-4 rounded bg-yellow-300 flex justify-center items-center">
+            <Icon type="md-alert" size="20" class="text-red-600 mr-2"></Icon>
+            <div>
+                <p>CV'nizi tamamlamadınız!</p>
+                <p class="mt-2 font-semibold text-xs">Lütfen Ad Soyad, Tecrübe, Eğitim ve Beceri alanlarını doldurun.</p>
+            </div>
+        </div>
+        {% endif %}
+        <div class="bg-white mt-4 px-24 py-12 shadow-lg">
+            <div>
+                <h3 class="text-xl font-semibold text-gray-800">{{user.first_name}} {{user.last_name}}</h3>
+                <div class="mt-6">
+                    <p class="mt-1 text-gray-800">{{user.location}}</p>
+                    <p class="mt-1 text-gray-800">{{user.email}}</p>
+                    <p class="mt-1 text-gray-800">+90{{user.phoneNumber}}</p>
+                </div>
+            </div>
+
+            <div>
+                <div class="pb-2 mt-6 flex justify-between items-center border-b-2">
+                    <h3 class="review-title text-gray-600">İş Deneyimi</h3>
+                    <a class="text-blue-700 transition duration-300 hover:text-blue-500 p-2 hover:bg-gray-200 rounded-full" href="/resume/wizard/experience" target="_blank">
+                        <div>
+                            <Icon type="md-add" size="14" class="border-2 border-blue-500 rounded-full p-1 font-semibold"></Icon>
+                        </div>
+                    </a>
+                </div>
+                {% for item in experienceData %}
+                 <div class="mt-4">
+                    <h3 class="review-experience-title font-semibold text-gray-800">{{item.position}}</h3>
+                    <div>
+                        <p class="text-gray-800">{{item.companyName}} - {{item.companyLocation}}</p>
+                        {% if item.still_working %}
+                            <p class="mt-1 font-semibold text-gray-600 text-xs">{{item.start_date}} - Devam ediyor</p>
+                        {% else %}
+                            <p class="mt-1 font-semibold text-gray-600 text-xs">{{item.start_date}} - {{item.end_date}}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="pb-2 mt-6 flex justify-between items-center border-b-2">
+                    <h3 class="review-title text-gray-600">Eğitim</h3>
+                    <a class="text-blue-700 transition duration-300 hover:text-blue-500 p-2 hover:bg-gray-200 rounded-full" href="/resume/wizard/education" target="_blank">
+                        <div>
+                            <Icon type="md-add" size="14" class="border-2 border-blue-500 rounded-full p-1 font-semibold"></Icon>
+                        </div>
+                    </a>
+                </div>
+                <div class="mt-4">
+                    <h3 class="review-experience-title font-semibold text-gray-800">{{user.department}} alanında {{user.educational_level}}</h3>
+                    <div>
+                        <p class="text-gray-800">{{user.school}} - {{user.school_location}}</p>
+                        {% if user.is_student %}
+                            <p class="mt-1 font-semibold text-gray-600 text-xs">{{user.school_start_date}} - Devam ediyor</p>
+                        {% else %}
+                            <p class="mt-1 font-semibold text-gray-600 text-xs">{{user.school_start_date}} - {{user.graduate_date}}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="pb-2 mt-6 flex justify-between items-center border-b-2">
+                    <h3 class="review-title text-gray-600">Beceriler</h3>
+                    <a class="text-blue-700 transition duration-300 hover:text-blue-500 p-2 hover:bg-gray-200 rounded-full" href="/resume/wizard/skills" target="_blank">
+                        <div>
+                            <Icon type="md-add" size="14" class="border-2 border-blue-500 rounded-full p-1 font-semibold"></Icon>
+                        </div>
+                    </a>
+                </div>
+                <div class="mt-4">
+                    <div>
+                        {% for skill in modifiedSkills %}
+                        <p class="text-gray-800 mt-2">{{skill}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

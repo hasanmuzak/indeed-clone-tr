@@ -1,0 +1,58 @@
+{% extends '../layout.njk' %}
+
+{% block head %}
+<title>Indeed Clone || Skills</title>
+{% endblock head %}
+
+{% block content %}
+{% if user.is_verified == false %}
+<div oncontextmenu="return false" class="modal-box flex items-center justify-center select-none">
+    <div class="w-full lg:w-1/3 bg-green-300 p-8 rounded text-center">
+        <h3 class="text-black font-semibold text-lg">
+            Eylem gerekiyor: E-mail adresinizi doğrulayın
+        </h3>
+        <p class="mt-6 text-gray-800">
+            CV'nin işverenlere harika göründüğünden emin ol. CV'ni hemen görüntülemek ve güncellemek için e-posta adresini onayla. Hesabını onaylamak için <span class="font-semibold">{{user.email}}</span> adresine gönderdiğimiz onay bağlantısına tıkla.
+        </p>
+    </div>
+</div>
+{% endif %}
+<div class="create-resume-container">
+    <div class="container mx-auto mt-10 flex flex-col">
+        <div class="flex justify-between w-full lg:w-1/3 mx-auto items-center p-4 md:p-0">
+            <h3 class="text-black resume-create-title">Bir Indeed CV Oluştur</h3>
+            <span>Adım 4/5</span>
+        </div>
+        <form method="post">
+            <div class="bg-white border rounded w-full lg:w-1/3 mx-auto mt-4 p-4">
+                <h3 class="text-black font-semibold resume-sub-title">Beceriler</h3>
+                <p class="p-4">Öneri: Öne çıkabilmek için en iyi 3-5 becerinizi ekleyin.</p>
+                <div class="flex flex-col mt-4">
+                    <span class="text-gray-700 font-semibold">Add a new skill</span>
+                    <span class="mt-2 text-xs text-gray-600">Örnek: Microsoft Office</span>
+                    <div class="flex items-center justify-between">
+                        <i-input name="skill" v-model="user.skill.skill" class="mt-2 login-register-input mr-4" size="large"></i-input>
+                        <i-button @click="addSkill" style="border-radius: 33px;" class="font-semibold flex justify-center items-center p-4 mt-2" type="primary">Ekle
+                        </i-button>
+                        <input type="hidden" name="skill_list" :value="user.skill.skillHiddenValue">
+                    </div>
+                </div>
+                <div v-if="user.skill.list.length > 0" class="mt-4 border rounded">
+                    <div v-for="(skill, index) in user.skill.list" :key="index" class="py-2 px-4 flex justify-between items-center ">
+                        <span>- <% skill %></span>
+                    </div>
+                    <span class="trash-icn font-semibold px-4 text-center block py-2" @click="deleteSkill(skill)">Reset<Icon class="ml-2" size="20" type="md-trash"></Icon></span>
+                </div>
+            </div>
+           <div class="w-full lg:w-1/3 mx-auto mb-4 flex items-center justify-between px-4 md:p-0">
+                <i-button :disabled="user.skill.skillHiddenValue == null || user.skill.skillHiddenValue == ''" html-type="submit" style="border-radius: 33px;" class="self-start flex items-center font-semibold  mt-4 p-5"
+                    type="primary">Sonraki
+                </i-button>
+                <i-button onclick="location.href='/resume/wizard/experience';" style="border-radius: 33px;" class="self-start flex items-center font-semibold  mt-4 p-5"
+                    type="default">Önceki Adım
+                </i-button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

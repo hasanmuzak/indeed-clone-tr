@@ -1,0 +1,61 @@
+{% extends '../layout.njk' %}
+
+{% block content %}
+<div class="review-container container mx-auto flex mb-6">
+    <div class="w-full p-3">
+        <div class="bg-white mt-4 px-24 py-12 shadow-lg">
+            <div>
+                <h3 class="text-xl font-semibold text-gray-800">{{results[0].user.first_name}} {{results[0].user.last_name}}</h3>
+                <div class="mt-6">
+                    <p class="mt-1 text-gray-800">{{results[0].user.location}}</p>
+                    <p class="mt-1 text-gray-800">{{results[0].user.email}}</p>
+                    <p class="mt-1 text-gray-800">+90{{results[0].user.phoneNumber}}</p>
+                </div>
+            </div>
+
+            <div>
+                <div class="pb-2 mt-6 border-b-2">
+                    <h3 class="review-title text-gray-600">İş Deneyimi</h3>
+                </div>
+                {% for item in results %}
+                 <div class="mt-4">
+                    <h3 class="review-experience-title font-semibold text-gray-800">{{item.position}}</h3>
+                    <div>
+                        <p class="text-gray-800">{{item.companyName}} - {{item.companyLocation}}</p>
+                        {% if item.still_working %}
+                            <p class="mt-1 font-semibold text-gray-600 text-xs">{{item.start_date}} - Devam ediyor</p>
+                        {% else %}
+                            <p class="mt-1 font-semibold text-gray-600 text-xs">{{item.start_date}} - {{item.end_date}}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="pb-2 mt-6 border-b-2">
+                    <h3 class="review-title text-gray-600">Eğitim</h3>
+                </div>
+                <div class="mt-4">
+                    <h3 class="review-experience-title font-semibold text-gray-800">{{results[0].user.department}} alanında {{results[0].user.educational_level}}</h3>
+                    <div>
+                        <p class="text-gray-800">{{results[0].user.school}} - {{results[0].user.school_location}}</p>
+                        {% if results[0].user.is_student %}
+                            <p class="mt-1 font-semibold text-gray-600 text-xs">{{results[0].user.school_start_date}} - Devam ediyor</p>
+                        {% else %}
+                            <p class="mt-1 font-semibold text-gray-600 text-xs">{{results[0].user.school_start_date}} - {{results[0].user.graduate_date}}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="pb-2 mt-6 border-b-2">
+                    <h3 class="review-title text-gray-600">Beceriler</h3>
+                </div>
+                <div class="mt-4">
+                    <div>
+                        {% for skill in modifiedSkills %}
+                        <p class="text-gray-800 mt-2">{{skill}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
